@@ -28,7 +28,7 @@ void parseValuePairs(unordered_map<string, string> &valuePairs, NginxConfig conf
       token2 = config.statements_[k]->tokens_[1];
     }
 
-    printf("%s, %s\n", token1.c_str(), token2.c_str());
+//    printf("%s, %s\n", token1.c_str(), token2.c_str());
     valuePairs.insert({token1, token2});
   }
 }
@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
   // printf("%s\n", valuePairs["server_name"].c_str());
 
   Team15::server::server s(valuePairs["server_name"],valuePairs["listen"]);   
-  //s.run();
+  s.run();
   
   return 0;
 }

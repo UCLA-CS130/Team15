@@ -10,8 +10,9 @@ namespace Team15 {
 namespace server {
 
   RequestHandler::Status StaticHandler::Init(const std::string& uri_prefix,
-		    NginxConfig config) {
+        NginxConfig config) {
 
+    uri_prefix_ = uri_prefix;
     std::string root = "";
     for (auto statement : config.statements_) {
       if (statement->tokens_[0] == "root") {
@@ -30,20 +31,21 @@ namespace server {
 }
   RequestHandler::Status StaticHandler::HandleRequest(const Request& request, 
         Response* response) {   
-    std::string path = rootPath_.string();
 
-    // relative path
-    if (path[0] == '/') {
-      path = '.' + path;
-    }
+    std::string path = '.' + rootPath_.string();
 
     // Connect file with root path
-    path = path + request.uri();
+    //std::string relative_path = request.uri().substr(uri_prefix_.size());
+    //if (relative_path != "" && relative_path[0] != '/')
+    //  relative_path = "/" + relative_path;
+    path = path + "/" + request.uri().substr(uri_prefix_.size());
 
     // default file
     if (path[path.size() - 1] == '/') {
       path += "index.html";
     }
+
+    std::cout << "staticHanlder " << path << std::endl;
 
     // determine file extension
     std::size_t last_slash_pos = path.find_last_of("/");
@@ -56,6 +58,7 @@ namespace server {
     boost::filesystem::path boost_path(path);
     if (!boost::filesystem::exists(path) 
             || !boost::filesystem::is_regular_file(path)) {
+      std::cout << 1 << std::endl;
       NotFoundHandler not_found_handler;
       not_found_handler.HandleRequest(request, response);
       

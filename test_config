@@ -8,6 +8,12 @@ server_name 127.0.0.1;
 path /static StaticHandler {
   root /static;
 
+path /status StatusHandler {}
+  
+path / ProxyHandler {
+	server_host ucla.edu;
+	server_port 80;
+}
 path /echo EchoHandler{}
 
 # Default response handler if no handlers match.

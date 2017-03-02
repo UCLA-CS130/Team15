@@ -38,7 +38,7 @@ namespace server {
     }
 
     // Connect file with root path
-    path = path + request.uri();
+    path = path + '/' + request.uri().substr(uri_prefix_.size());
 
     // default file
     if (path[path.size() - 1] == '/') {

@@ -25,7 +25,7 @@ class server
   // Check if server is valid
   bool is_valid(const std::string& address, const std::string& port);
   
-  // Run the server's io loop
+  // Spwans pool of threads to run io_service loop
   void run();
   void connection_done(connection* connection);
   boost::asio::io_service& getService();
@@ -37,6 +37,8 @@ class server
   boost::asio::ip::tcp::acceptor acceptor_;
   std::set<connection*> connections_;
   RequestMgr requestMgr_;
+  // Default at 5 threads, we could change this to be specified from config
+  const std::size_t num_threads_ = 5;
 };
 }
 }

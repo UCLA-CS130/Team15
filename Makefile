@@ -4,7 +4,7 @@ CFLAGS=-g -std=c++11 -DBOOST_LOG_DYN_LINK -lboost_system -lboost_filesystem -lbo
 HEADERS=Response.h Request.h HttpMessage.h server.h connection.h RequestMgr.h RequestHandler.h EchoHandler.h StaticHandler.h nginx-configparser/config_parser.h requestconfig.h mime_types.hpp NotFoundHandler.h StatusHandler.h ServerStatus.h
 CLASS_SOURCES=server.cpp connection.cpp RequestMgr.cpp RequestHandler.cpp EchoHandler.cpp StaticHandler.cpp ProxyHandler.cpp nginx-configparser/config_parser.cc mime_types.cpp NotFoundHandler.cpp StatusHandler.cpp ServerStatus.cpp
 SOURCES=main.cpp $(CLASS_SOURCES)
-TESTFILES=server_test.cc connection_test.cc Http_test.cc RequestMgr_test.cc RequestHandler_test.cc EchoHandler_test.cc StaticHandler_test.cc NotFoundHandler_test.cc StatusHandler_test.cc ServerStatus_test.cc
+TESTFILES=server_test.cc connection_test.cc Http_test.cc RequestMgr_test.cc RequestHandler_test.cc EchoHandler_test.cc StaticHandler_test.cc NotFoundHandler_test.cc StatusHandler_test.cc ServerStatus_test.cc ProxyHandler_test.cc
 all: webserver
 
 webserver : $(SOURCES) $(HEADERS)

@@ -12,10 +12,12 @@ port 2020;  # This is also a comment.
 server_name 127.0.0.1;
 
 path / StaticHandler {
-  root /foo/bar;
+  root /static;
 }
 
 path /echo EchoHandler{}
+
+path /status StatusHandler{}
 
 # Default response handler if no handlers match.
 default NotFoundHandler{}" > test_config

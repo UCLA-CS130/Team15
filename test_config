@@ -4,9 +4,9 @@
 port 2020;  # This is also a comment.
 server_name 127.0.0.1;
 
-path / StaticHandler {
-  root /foo/bar;
-}
+
+path /static StaticHandler {
+  root /static;
 
 path /echo EchoHandler{}
 

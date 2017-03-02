@@ -1,4 +1,5 @@
 webserver
+server_test
 *.o
 *.a
 *.out

@@ -28,17 +28,13 @@ path / StaticHandler {
   root /foo/bar;
 }
 path /echo EchoHandler{}
-path /80 ProxyHandler {
-  server_host ucla.edu;
-  server_port 80;
-}
+
 path /2020 ProxyHandler {
   server_host localhost;
   server_port 2020;
 }
 # Default response handler if no handlers match.
 default NotFoundHandler{}" > test_proxy_config
-
 
 ./webserver test_config &>/dev/null &
 #./webserver test_config &
@@ -54,14 +50,12 @@ EXIT_STATUS=$?
 
 #Do the proxy test
 curl -i -s localhost:8080/2020/echo > test_proxy_response
+curl -i -s localhost:2020/echo > expected_proxy_response
 DIFF_PROXY=$(diff expected_proxy_response test_proxy_response)
 EXIT_STATUS_PROXY=$?
 
-curl -i -s localhost:8080/80/ > test_proxy_redirect_response
-head -n 1 test_proxy_redirect_response > test_proxy_redirect_response1
-DIFF_REDIRECT=$(diff test_proxy_redirect_response1 expected_proxy_redirect_response)
-EXIT_STATUS_PROXY_REDIRECT=$?
-
+echo "Integration Test!"
+echo "---------------------------------------------------------------------|"
 # Error handling
 if [ "$EXIT_STATUS" -eq 0 ]
 then
@@ -81,25 +75,18 @@ else
     echo "diff: "
     echo $DIFF_PROXY
 fi
+echo "---------------------------------------------------------------------|"
 
-#Proxy Redirected Handling
-if [ "$EXIT_STATUS_PROXY_REDIRECT" -eq 0 ]
-then
-    echo "SUCCESS: Proxy 302 test passed"
-else
-    echo "FAILED: Proxy 302 test failed"
-    echo "diff: "
-    echo $DIFF_REDIRECT
-fi
 
 
 # Shutdown the webserver and cleanup
 echo "Cleaning up and shutting down"
 pkill webserver
 make clean
+rm -f test_config
+rm -f test_proxy_config
 rm -f test_response
 rm -f test_proxy_response
-rm -f test_proxy_redirect_response
-rm -f test_proxy_redirect_response1
+rm -f expected_proxy_response
 
 exit "$EXIT_STATUS"

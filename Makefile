@@ -29,3 +29,6 @@ check :
 integration :
 	./integration_test.sh
 
+proxy_302_test :
+	chmod +x proxy_302_local_test.sh && ./proxy_302_local_test.sh
+

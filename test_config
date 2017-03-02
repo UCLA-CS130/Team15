@@ -4,18 +4,11 @@
 port 2020;  # This is also a comment.
 server_name 127.0.0.1;
 
-path /static StaticHandler {
-  root /static;
+path / StaticHandler {
+  root /foo/bar;
 }
-
-path /status StatusHandler {}
 
 path /echo EchoHandler{}
-
-path / ProxyHandler {
-	server_host ucla.edu;
-	server_port 80;
-}
 
 # Default response handler if no handlers match.
 default NotFoundHandler{}

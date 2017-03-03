@@ -1,8 +1,5 @@
 HTTP/1.0 200 OK
-Content-Type: text/plain
+Content-Length: 5
+Content-Type: text/html
 
-GET / HTTP/1.1
-User-Agent: curl/7.35.0
-Host: localhost:4000
-Accept: */*
-
+test

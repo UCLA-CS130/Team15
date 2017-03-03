@@ -12,18 +12,23 @@ port 2020;  # This is also a comment.
 server_name 127.0.0.1;
 
 path / StaticHandler {
-  root /foo/bar;
+  root /static;
 }
 
-path /echo EchoHandler;
+path /echo EchoHandler{}
+
+path /status StatusHandler{}
 
 # Default response handler if no handlers match.
-default NotFoundHandler;" > test_config
-#./webserver test_config &>/dev/null &
-./webserver test_config &
+default NotFoundHandler{}" > test_config
+./webserver test_config &>/dev/null &
+# ./webserver test_config &
+
+sleep 5
 
 # Send request to server
-curl -i -s localhost:4000 > test_response
+curl -i -s localhost:2020 > test_response
+# printf "\n" >> test_response
 
 # Verify the response from the server works as expected
 DIFF=$(diff expected_response test_response)

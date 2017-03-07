@@ -1,5 +1,7 @@
-HTTP/1.0 200 OK
-Content-Length: 5
+
+HTTP/1.0 404 NOT_FOUND
+Content-Length: 63
 Content-Type: text/html
 
-test
+<!DOCTYPE html><html><body><h1>404 Not Found</h1></body></html>
+

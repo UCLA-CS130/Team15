@@ -1,3 +1,5 @@
+// Threading modeled after https://github.com/UCLA-CS130/AAAAA/blob/master/server.cpp
+
 #include <ctime>
 #include <iostream>
 #include <string>
@@ -5,6 +7,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "server.h"
 
@@ -69,7 +73,18 @@ namespace server {
 			   });
   }
   void server::run() {
-    io_service_.run();
+    // create thread pool
+    std::vector<boost::shared_ptr<boost::thread>> threads;
+    for (std::size_t i = 0; i < num_threads_; i++) {
+      // run io_service for async operations in each thread
+      boost::shared_ptr<boost::thread> thread(new boost::thread(
+        boost::bind(&boost::asio::io_service::run, &io_service_)));
+      threads.push_back(thread);
+    }
+    // wait for all threads to exit
+    for (std::size_t i = 0; i < threads.size(); i++) {
+      threads[i]->join();
+    }
   }
   void server::connection_done(connection* connection) {
     connections_.erase(connection);

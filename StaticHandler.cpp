@@ -38,15 +38,24 @@ namespace server {
     }
 
     // Connect file with root path
-    path = path + request.uri();
+    path = path /*+ '/'*/ + request.uri().substr(uri_prefix_.size());
 
     // default file
     if (path[path.size() - 1] == '/') {
       path += "index.html";
     }
 
+    std::cout << path << std::endl;
+
     // determine file extension
     std::size_t last_slash_pos = path.find_last_of("/");
+
+
+    // used for testing threads; will stall if requesting hold
+    // if (path.substr(last_slash_pos + 1) == "hold")
+    //   while(true) {}
+
+
     std::size_t last_dot_pos = path.find_last_of(".");
     std::string extension;
     if (last_dot_pos != std::string::npos && last_dot_pos > last_slash_pos) {

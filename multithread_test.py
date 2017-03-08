@@ -45,12 +45,17 @@ def connect(request, expected_response, error_code):
 	print "Connection Successful!"
 	error_code = 0
 
-def two_connections_test():
+def n_connections_test(threads):
 	print "Starting hold request thread"
-	hold = Thread(target = hold_connect, args=())
-	hold.start()
 
-	time.sleep(3)
+	thread_list = list()
+
+	for x in threads:
+		hold = Thread(target = hold_connect, args=())
+		hold.start()
+		thread_list.append(hold)
+		time.sleep(3)
+
 
 	print "Starting static request thread"
 	static_error = 0
@@ -65,17 +70,17 @@ def two_connections_test():
 
 def start_server():
 	print "Starting server..."
-	p = subprocess.Popen("./webserver test_config", shell=True)
+	p = subprocess.Popen("./webserver config_file", shell=True)
 
 if __name__ == "__main__":
 	# Give time for the server to start
 	start_server()
 	time.sleep(2)
 
-	two_connections_results = two_connections_test()
+	n_connections_results = n_connections_test(sys.argv[1])
 	time.sleep(2)
 
-	if (two_connections_results == 0):
+	if (n_connections_results == 0):
 		print "THREAD SUCCESS"
 		exit(0)
 	else:

@@ -1,7 +1,7 @@
 
 # This is a comment.
 
-port 2020;  # This is also a comment.
+port 8080;  # This is also a comment.
 server_name 127.0.0.1;
 
 path /static StaticHandler {

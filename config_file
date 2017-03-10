@@ -2,7 +2,7 @@
 # This is a comment.
 
 port 8080;  # This is also a comment.
-server_name 127.0.0.1;
+server_name 0.0.0.0;
 
 path /static StaticHandler {
   root /static;

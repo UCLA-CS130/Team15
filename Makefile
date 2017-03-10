@@ -12,6 +12,7 @@ webserver : $(SOURCES) $(HEADERS)
 
 clean :
 	rm -f webserver server_test *~ *.o *.a *.gcda *.gcno *.gcov coverage_results
+	rm -rf deploy
 
 
 test : $(SOURCES) $(HEADERS) $(TESTFILES)
@@ -25,6 +26,14 @@ check :
 	./test_script.sh
 	python parse_coverage.py
 
+deploy :
+	mkdir deploy
+	cp -r static deploy
+	cp config_file deploy
+	tar -xf binary.tar -C deploy/
+	cp Dockerfile.run deploy
+	docker build -f ./deploy/Dockerfile.run -t webserver ./deploy
+	docker save -o webserver_img.tar webserver
 
 integration :
 	./integration_test.sh

@@ -1,6 +1,6 @@
 CC=g++
 GTEST_DIR=nginx-configparser/googletest/googletest
-CFLAGS=-g -std=c++11 -DBOOST_LOG_DYN_LINK -lboost_system -lboost_filesystem -lboost_log -lboost_thread -lboost_regex -Wall -Werror -lpthread
+CFLAGS=-g -std=c++11 -static-libgcc -static-libstdc++ -pthread -Wl,-Bstatic -lboost_log -lboost_thread -lboost_filesystem -lboost_regex -lboost_system -lm -Wall -Werror
 HEADERS=Response.h Request.h HttpMessage.h server.h connection.h RequestMgr.h RequestHandler.h EchoHandler.h StaticHandler.h nginx-configparser/config_parser.h requestconfig.h mime_types.hpp NotFoundHandler.h StatusHandler.h ServerStatus.h
 CLASS_SOURCES=server.cpp connection.cpp RequestMgr.cpp RequestHandler.cpp EchoHandler.cpp StaticHandler.cpp ProxyHandler.cpp nginx-configparser/config_parser.cc mime_types.cpp NotFoundHandler.cpp StatusHandler.cpp ServerStatus.cpp
 SOURCES=main.cpp $(CLASS_SOURCES)
@@ -12,6 +12,7 @@ webserver : $(SOURCES) $(HEADERS)
 
 clean :
 	rm -f webserver server_test *~ *.o *.a *.gcda *.gcno *.gcov coverage_results
+	rm -rf deploy
 
 
 test : $(SOURCES) $(HEADERS) $(TESTFILES)
@@ -25,6 +26,14 @@ check :
 	./test_script.sh
 	python parse_coverage.py
 
+deploy :
+	mkdir deploy
+	cp -r static deploy
+	cp config_file deploy
+	tar -xf binary.tar -C deploy/
+	cp Dockerfile.run deploy
+	docker build -f ./deploy/Dockerfile.run -t webserver ./deploy
+	docker save -o webserver_img.tar webserver
 
 integration :
 	./integration_test.sh

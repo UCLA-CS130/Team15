@@ -12,7 +12,7 @@ namespace server {
 
   RequestHandler::Status StaticHandler::Init(const std::string& uri_prefix,
 		    NginxConfig config) {
-
+    compressionHandler_.Init(uri_prefix,config);
     uri_prefix_ = uri_prefix;
     std::string root = "";
     for (auto statement : config.statements_) {
@@ -107,9 +107,11 @@ namespace server {
     response->SetStatus(Response::ResponseCodeOK);
     response->SetReasoning("OK");
     response->AddHeader("Content-Type", http::server::mime_types::extension_to_type(extension));
+    if (request.FetchHeaderField(HttpMessage::HttpHeaderFields::ACCEPT_ENCODING).find("gzip") != std::string::npos) {
+      response->SetBody(body);
+      return compressionHandler_.HandleRequest(request,response);
+    }
     response->AddHeader("Content-Length", content_length);
-    response->SetBody(body);
-  
     return RequestHandler::Status::OK;   
 }
 

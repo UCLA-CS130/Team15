@@ -79,7 +79,6 @@ namespace server {
       return RequestHandler::Status::OK;
     }
 
-    std::cout << "Extension: " << extension << std::endl;
     std::string body;
 
     if (extension == "md") {

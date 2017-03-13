@@ -3,6 +3,7 @@
 
 #include "RequestHandler.h"
 #include <boost/filesystem/path.hpp>
+#include "CompressionHandler.h"
 namespace Team15 {
 namespace server {
 
@@ -15,6 +16,7 @@ class StaticHandler : public RequestHandler {
  private:
   std::string uri_prefix_;
   boost::filesystem::path rootPath_;
+  CompressionHandler compressionHandler_;
 };
 
 //REGISTER_REQUEST_HANDLER(StaticHandler);

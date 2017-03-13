@@ -24,7 +24,7 @@ const std::string HttpVersionToken = "HTTP/1.0";
  void SetVersion(const std::string& _version) { httpVersion_ =_version; } 
  void SetHeaderField(const HttpHeaderFields key, const std::string& value) { AddHeader(HttpHeaderFieldsMap().at(key),value); }
  
- std::string FetchHeaderField(HttpHeaderFields key) { return headerFields_[(HttpHeaderFieldsMap().at(key))]; }
+ std::string FetchHeaderField(HttpHeaderFields key) const { return headerFields_.at(HttpHeaderFieldsMap().at(key)); }
  void AddHeader(const std::string& header_name, const std::string& header_value) {
    headerFields_[header_name] = header_value;
  }

@@ -74,3 +74,40 @@ And the output will dictate if the server was launched sucessfully or not.
 
 Specificed format is in the following link:
 https://github.com/UCLA-CS130/webserver-api
+
+
+## Docker / AWS
+
+To build the deployment image of the webserver, use the following
+command:
+
+```
+make deploy
+```
+
+This creates a tar of the image in the current directory which 
+can then be transferred to the AWS instance using scp.
+
+Load the image from the tar file and rename the image.
+```
+docker load -i webserver_img.tar
+docker tag <image id> webserver
+```
+
+Finally, build the webserver and run it.
+```
+docker run --rm -i -t -p 8080:8080 webserver
+```
+
+NOTES:
+	in the config file, server_name was changed to 0.0.0.0
+	instead of 127.0.0.1 to allow for listening outside the
+	container.
+
+	AWS security settings need to be adjusted in order to allow
+	for traffic on the specified ports.
+
+
+### Markdown
+
+Used library cpp-markdown to render markdown as HTML.

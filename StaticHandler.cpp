@@ -6,6 +6,7 @@
 #include <string>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include "markdown.h"
 namespace Team15 {
 namespace server {
 
@@ -78,12 +79,30 @@ namespace server {
       return RequestHandler::Status::OK;
     }
 
-    char c;
+    std::cout << "Extension: " << extension << std::endl;
     std::string body;
-    while (is.get(c)) {
-      body += c;
+
+    if (extension == "md") {
+      markdown::Document doc;
+      char c;
+      std::string temp;
+      while (is.get(c)) {
+        temp += c;
+      }
+      is.close();
+      doc.read(temp);
+      std::ostringstream s;
+      doc.write(s);
+      body = s.str();
+
+    } else {
+      char c;
+      while (is.get(c)) {
+        body += c;
+      }
+      is.close();
     }
-    is.close();  
+
 
     std::string content_length = std::to_string((int) body.size());
     response->SetStatus(Response::ResponseCodeOK);

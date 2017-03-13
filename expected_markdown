@@ -1,0 +1,64 @@
+HTTP/1.0 200 OK
+Content-Length: 3029
+Content-Type: text/plain
+
+<h1>Team 15</h1>
+<p>Winter CS130 Team15 Repository. Working on HTTP server with different functionality configurable using nginx standards and conforming to the following common api: https://github.com/UCLA-CS130/webserver-api</p>
+
+<h2>New Updated for Assignment 7</h2>
+<p>When you start the server as followed, type the url: localhost:2020/ in the browser. Then you will get the homepage of ucla. Our team(TSC) set the ProxyHandler root as '/' in the test_config to make sure all of the src/href files will be fetched successfully. The server for our proxy is ucla.edu, which have some 302 codes sent back. And our server handles 302 codes successfully.</p>
+
+<h2>Getting Started</h2>
+<p>These instructions will show you what to do to run our project and test everything</p>
+
+<h3>Prerequisites</h3>
+<p>You need to be running Ubuntu 14.04 and have boost, gtest and git installed. You can do so by running the following code in terminal: </p>
+
+<p><code>`sudo apt-get update sudo apt-get install libboost-all-dev sudo apt-get install build-essential sudo apt-get install git`</code></p>
+
+<h3>Installing</h3>
+<p>In order to install our project, go to a clean folder and run:</p>
+
+<p><code>`git clone --recursive https://github.com/UCLA-CS130/Team15.git`</code> Then, you can run: <code>`cd Team15 make`</code> In order to build the executable.</p>
+
+<h3>Testing</h3>
+<p>We have multiple testing options.</p>
+
+<h4>Unit Tests</h4>
+<p>For unit tests, please run: <code>`make make test`</code> The output will dictate whether they succeeded or not.</p>
+
+<h4>Unit Test Coverage</h4>
+<p>For test coverage tests, please run: <code>`make make test make check`</code> This will show the percentage of coverage of our tests.</p>
+
+<h4>Integration Tests</h4>
+<p>For integration tests, please run: <code>`make make integration`</code></p>
+
+<h2>Usage</h2>
+<p>In order to run our project with a config file in the specified format, please run this following code: <code>`./webserver &lt;filename&gt;`</code> And the output will dictate if the server was launched sucessfully or not.</p>
+
+<p>Specificed format is in the following link: https://github.com/UCLA-CS130/webserver-api</p>
+
+<h2>Docker / AWS</h2>
+<p>To build the deployment image of the webserver, use the following command:</p>
+
+<p><code>`make deploy`</code></p>
+
+<p>This creates a tar of the image in the current directory which  can then be transferred to the AWS instance using scp.</p>
+
+<p>Load the image from the tar file and rename the image. <code>`docker load -i webserver_img.tar docker tag &lt;image id&gt; webserver`</code></p>
+
+<p>Finally, build the webserver and run it. <code>`docker run --rm -i -t -p 8080:8080 webserver`</code></p>
+
+<p>NOTES:</p>
+
+<pre><code>in the config file, server_name was changed to 0.0.0.0
+instead of 127.0.0.1 to allow for listening outside the
+container.
+
+AWS security settings need to be adjusted in order to allow
+for traffic on the specified ports.
+</code></pre>
+
+<h3>Markdown</h3>
+<p>Used library cpp-markdown to render markdown as HTML.</p>
+

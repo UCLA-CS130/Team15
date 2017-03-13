@@ -56,6 +56,10 @@ curl -i -s localhost:2020/echo > expected_proxy_response
 DIFF_PROXY=$(diff expected_proxy_response test_proxy_response)
 EXIT_STATUS_PROXY=$?
 
+curl -i -s localhost:2020/README.md > test_markdown_response
+DIFF_MARKDOWN=$(diff test_markdown_response expected_markdown)
+EXIT_STATUS_MARKDOWN=$?
+
 echo "Integration Test!"
 echo "---------------------------------------------------------------------|"
 # Error handling
@@ -79,6 +83,17 @@ else
 fi
 echo "---------------------------------------------------------------------|"
 
+#Markdown error handling
+if [ "$EXIT_STATUS_MARKDOWN" -eq 0 ]
+then
+    echo "SUCCESS: Markdown test passed"
+else
+    echo "FAILED: Markdown test failed"
+    echo "diff: "
+    echo $DIFF_MARKDOWN
+fi
+echo "---------------------------------------------------------------------|"
+
 
 
 # Shutdown the webserver and cleanup
@@ -89,6 +104,7 @@ rm -f test_config
 rm -f test_proxy_config
 rm -f test_response
 rm -f test_proxy_response
+rm -f test_markdown_response
 rm -f expected_proxy_response
 
 exit "$EXIT_STATUS"

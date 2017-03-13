@@ -106,3 +106,8 @@ NOTES:
 
 	AWS security settings need to be adjusted in order to allow
 	for traffic on the specified ports.
+
+
+### Markdown
+
+Used library cpp-markdown to render markdown as HTML.

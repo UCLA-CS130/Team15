@@ -7,6 +7,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include "markdown.h"
+#include <map>
 namespace Team15 {
 namespace server {
 
@@ -72,6 +73,8 @@ namespace server {
 
     std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
 
+    // here
+
     if (!is) {
       NotFoundHandler not_found_handler;
       not_found_handler.HandleRequest(request, response);
@@ -93,25 +96,31 @@ namespace server {
       std::ostringstream s;
       doc.write(s);
       body = s.str();
-
+      body = "<html>" + body + "</html>";
+      response->AddHeader("Content-Type", "text/html");
     } else {
       char c;
       while (is.get(c)) {
         body += c;
       }
       is.close();
+      response->AddHeader("Content-Type", http::server::mime_types::extension_to_type(extension));
     }
-
 
     std::string content_length = std::to_string((int) body.size());
     response->SetStatus(Response::ResponseCodeOK);
     response->SetReasoning("OK");
-    response->AddHeader("Content-Type", http::server::mime_types::extension_to_type(extension));
-    if (request.FetchHeaderField(HttpMessage::HttpHeaderFields::ACCEPT_ENCODING).find("gzip") != std::string::npos) {
+    
+    std::map<std::string, std::string> headers = request.GetHeaders();
+
+    if ((headers.find("Accept-Encoding") != headers.end())
+      && (request.FetchHeaderField(HttpMessage::HttpHeaderFields::ACCEPT_ENCODING).find("gzip") != std::string::npos)) {
       response->SetBody(body);
       return compressionHandler_.HandleRequest(request,response);
     }
+    response->SetBody(body);
     response->AddHeader("Content-Length", content_length);
+
     return RequestHandler::Status::OK;   
 }
 

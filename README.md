@@ -79,14 +79,18 @@ https://github.com/UCLA-CS130/webserver-api
 ## Docker / AWS
 
 To build the deployment image of the webserver, use the following
-command:
+commands:
 
 ```
+make clean
+docker build -t webserver.build .
+docker run webserver.build > binary.tar
 make deploy
+scp -i <key> ./webserver_img <AWS instance>
 ```
 
 This creates a tar of the image in the current directory which 
-can then be transferred to the AWS instance using scp.
+is then transferred to the AWS instance using scp.
 
 Load the image from the tar file and rename the image.
 ```
